@@ -35,7 +35,10 @@ BTree<Type>::~BTree()
 template<class Type>
 void BTree<Type>::add(Type data)
 {
-	Node* n = new Node;
+	Node* n = find(data, root);
+	if( n!= NULL)
+		throw std::invalid_argument("Нельзя записать 2 одинаковых значения");
+	n = new Node;
 	n->data = data;
 	n->left = NULL;
 	n->right = NULL;
@@ -53,7 +56,7 @@ Type BTree<Type>::get(Type key)
 {
 	Node* f = find(key, root);
 	if(f == NULL)
-		throw std::logic_error("Попытка найти элемент дарева по не существующему ключу");
+		throw std::logic_error("Попытка найти элемент дерева по не существующему ключу");
 	return f->data;
 }
 
@@ -68,7 +71,7 @@ void BTree<Type>::remove(Type key)
 {
 	Node* del = find(key, root);
 	if(del == NULL)
-		throw std::logic_error("Попытка удалить элемент дарева по не существующему ключу");
+		throw std::logic_error("Попытка удалить элемент дерева по не существующему ключу");
 	root = removeNode(del, root);
 	delete del;
 	root = balanse(root);
@@ -81,12 +84,12 @@ int BTree<Type>::getSize()
 {
 	return size;
 }
-
-template<class Type>
-void BTree<Type>::show()
-{
-	showNode(root);
-}
+//
+//template<class Type>
+//void BTree<Type>::show()
+//{
+//	showNode(root);
+//}
 
 // добавляет узел в дерево
 // принимает: указатель на добавляемый узел, указатель на корень дерева.
@@ -99,8 +102,6 @@ typename BTree<Type>::Node* BTree<Type>::addNode(Node* n, Node* root)
 		paste = n;
 	else
 	{
-		if(n->data == root->data) // в двоичное дерево нельзя записать 2 одинаковых значения
-			throw std::invalid_argument("Нельзя записать 2 одинаковых значениея");
 		if(root->data > n->data)
 			root->left = addNode(n, root->left);
 		else
@@ -119,7 +120,7 @@ typename BTree<Type>::Node* BTree<Type>::removeNode(Node* del, Node* root)
 	Node* r = NULL;
 	if (root != NULL)
 	{
-		if(root->data > del->data)
+		if(del->data < root->data)
 		{
 			root->left = removeNode(del, root->left);
 			r = root;
@@ -170,9 +171,9 @@ typename BTree<Type>::Node* BTree<Type>::removeNode(Node* del, Node* root)
 template<class Type>
 typename BTree<Type>::Node* BTree<Type>::find(Type key, Node* root)
 {
-	if(root->data != key && root!=NULL)
+	if(root!=NULL && !(root->data == key))
 	{
-		if(root->data > key)
+		if(key < root->data)
 		{
 			if (root->left != NULL)
 				root = find(key, root->left);
@@ -220,26 +221,26 @@ typename BTree<Type>::Node* BTree<Type>::copyNode(Node* root)
 	return NULL;
 }
 
-template<class Type>
-void BTree<Type>::showNode(Node* root, int level)
-{	
-	if (root == NULL)
-	{
-		for(int i=0; i < level; i++)
-			std::cout << "   ";
-		std::cout << "  *" << std::endl;
-	}
-	else
-	{
-		showNode(root->left, level+1);
-		for(int i=0; i < level; i++)
-			std::cout << "   ";
-		std::cout.setf(std::ios::right);
-		std::cout.width(3);
-		std::cout << root->data << std::endl;
-		showNode(root->right, level+1);
-	}
-}
+//template<class Type>
+//void BTree<Type>::showNode(Node* root, int level)
+//{	
+//	if (root == NULL)
+//	{
+//		for(int i=0; i < level; i++)
+//			std::cout << "   ";
+//		std::cout << "  *" << std::endl;
+//	}
+//	else
+//	{
+//		showNode(root->left, level+1);
+//		for(int i=0; i < level; i++)
+//			std::cout << "   ";
+//		std::cout.setf(std::ios::right);
+//		std::cout.width(3);
+//		std::cout << root->data << std::endl;
+//		showNode(root->right, level+1);
+//	}
+//}
 
 //template<class Type>
 //void BTree<Type>::balanse()
