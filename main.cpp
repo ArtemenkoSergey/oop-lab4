@@ -11,10 +11,12 @@ int main(int argc, char **argv)
 //	std::cout << "------------------" << std::endl;
 //	t.add(20);
 //	t.add(6);
-	t.show();
-	std::cout << "------------------" << std::endl;
-	t.balanse();
-//	t.remove(15);
-	t.show();
-	std::cout << "------------------" << std::endl;
+//	t.show();
+//	std::cout << "------------------" << std::endl;
+//	t.balanse();
+	t.add(11);
+//	t.show();
+//	std::cout << "------------------" << std::endl;
+	BTree<int> n = t;
+	n.show();
 }
