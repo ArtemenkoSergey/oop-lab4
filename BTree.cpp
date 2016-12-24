@@ -102,7 +102,7 @@ typename BTree<Type>::Node* BTree<Type>::addNode(Node* n, Node* root)
 		paste = n;
 	else
 	{
-		if(root->data > n->data)
+		if(n->data < root->data)
 			root->left = addNode(n, root->left);
 		else
 			root->right = addNode(n, root->right);
