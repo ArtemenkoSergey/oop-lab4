@@ -1,7 +1,6 @@
 #include "BTree.cpp"
 #include "MyClass.h"
 #include <iostream>
-#include <cstring>		// strlen()
 
 void classExample();
 void intExample();
@@ -63,9 +62,8 @@ void classExample()
 					std::cout << "Введите значения полей объекта, добавлемого в дерево:" << std::endl;
 					std::cout << "Введите значение поля key (целое число)" << std::endl;
 					std::cin >> t;
-					std::cout << "Введите значение поля data (строка длинной не более 255 символов)" << std::endl;
+					std::cout << "Введите значение поля data (строка длинной не более " << bufSize-1 << " символов)" << std::endl;
 					std::cin >> buffer;
-//					buffer[strlen(buffer)]='\0';
 					tmp.setKey(t).setData(buffer);
 					try
 					{
