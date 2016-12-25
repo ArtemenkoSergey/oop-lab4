@@ -59,7 +59,7 @@ void classExample()
 			case '1':
 				do
 				{
-					std::cout << "Введите значения полей объекта, добавлемого в дерево:" << std::endl;
+					std::cout << "Введите значения полей объекта, добавляемого в дерево:" << std::endl;
 					std::cout << "Введите значение поля key (целое число)" << std::endl;
 					std::cin >> t;
 					std::cout << "Введите значение поля data (строка длинной не более " << bufSize-1 << " символов)" << std::endl;
@@ -78,40 +78,34 @@ void classExample()
 				}while(1);
 				break;
 			case '2':
-				do
+				std::cout << "Введите ключ для поиска:" << std::endl;
+				std::cin >> t;
+				tmp.setKey(t);
+				try
 				{
-					std::cout << "Введите ключ для поиска:" << std::endl;
-					std::cin >> t;
-					tmp.setKey(t);
-					try
-					{
-						tmp = tree.get(tmp);
-						std::cout << "Найден объеект: " << tmp << std::endl;
-						break;
-					}
-					catch(std::logic_error ex)
-					{
-						std::cerr << ex.what() << std::endl;
-					}
-				}while(1);
+					tmp = tree.get(tmp);
+					std::cout << "Найден объект: " << tmp << std::endl;
+					break;
+				}
+				catch(std::logic_error ex)
+				{
+					std::cerr << ex.what() << std::endl;
+				}
 				break;
 			case '3':
-				do
+				std::cout << "Введите ключ удаляемого объекта:" << std::endl;
+				std::cin >> t;
+				tmp.setKey(t);
+				try
 				{
-					std::cout << "Введите ключ удаляемого объекта:" << std::endl;
-					std::cin >> t;
-					tmp.setKey(t);
-					try
-					{
-						tree.remove(tmp);
-						std::cout << "Объект удален из дерева." << std::endl;
-						break;
-					}
-					catch(std::logic_error ex)
-					{
-						std::cerr << ex.what() << std::endl;
-					}
-				}while(1);
+					tree.remove(tmp);
+					std::cout << "Объект удален из дерева." << std::endl;
+					break;
+				}
+				catch(std::logic_error ex)
+				{
+					std::cerr << ex.what() << std::endl;
+				}
 				break;
 			case '0':
 				exit = 1;
@@ -157,38 +151,32 @@ void intExample()
 				}while(1);
 				break;
 			case '2':
-				do
+				std::cout << "Введите искомое целое число:" << std::endl;
+				std::cin >> tmp;
+				try
 				{
-					std::cout << "Введите искомое целое число:" << std::endl;
-					std::cin >> tmp;
-					try
-					{
-						tmp = tree.get(tmp);
-						std::cout << "Найдено значение: " << tmp << std::endl;
-						break;
-					}
-					catch(std::logic_error ex)
-					{
-						std::cerr << ex.what() << std::endl;
-					}
-				}while(1);
+					tmp = tree.get(tmp);
+					std::cout << "Найдено значение: " << tmp << std::endl;
+					break;
+				}
+				catch(std::logic_error ex)
+				{
+					std::cerr << ex.what() << std::endl;
+				}
 				break;
 			case '3':
-				do
+				std::cout << "Введите удаляемое из дерева число:" << std::endl;
+				std::cin >> tmp;
+				try
 				{
-					std::cout << "Введите удаляемое из дерева число:" << std::endl;
-					std::cin >> tmp;
-					try
-					{
-						tree.remove(tmp);
-						std::cout << "Число удалено из дерева" << std::endl;
-						break;
-					}
-					catch(std::logic_error ex)
-					{
-						std::cerr << ex.what() << std::endl;
-					}
-				}while(1);
+					tree.remove(tmp);
+					std::cout << "Число удалено из дерева" << std::endl;
+					break;
+				}
+				catch(std::logic_error ex)
+				{
+					std::cerr << ex.what() << std::endl;
+				}
 				break;
 			case '0':
 				exit = 1;

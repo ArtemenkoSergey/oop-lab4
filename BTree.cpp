@@ -13,7 +13,7 @@ BTree<Type>::BTree()
 // принимает: ссылку на дерево
 // создает копию дерева
 template<class Type>
-BTree<Type>::BTree(BTree& tree)
+BTree<Type>::BTree(const BTree& tree)
 {
 	root = copyNode(tree.root);
 	size = tree.size;
@@ -29,30 +29,31 @@ BTree<Type>::~BTree()
 }
 
 // Добавляет в дереву значение
-// приниммает: значение добавляемое в дерево
+// принимает: значение добавляемое в дерево
 // создает новый узел, добавляет его в дерево, 
 // увеличивает значение размера дерева на 1
 template<class Type>
-void BTree<Type>::add(Type data)
+void BTree<Type>::add(const Type data)
 {
 	Node* n = find(data, root);
-	if( n!= NULL)
+	if(n!= NULL)
 		throw std::invalid_argument("Нельзя записать 2 одинаковых значения");
 	n = new Node;
 	n->data = data;
 	n->left = NULL;
 	n->right = NULL;
 	root = addNode(n, root);
+	root = balanse(root);
 	size++;
 }
 
 // возвращает значение по ключу
-// принимает: ключ такогог же типа как и значения в дереве
+// принимает: ключ такого же типа как и значения в дереве
 // возвращает: значение хранимое в дереве.
 // выполняет поиск по ключу в дереве начиная с корня
 // если значение не найдено бросает исключение std::logic_error
 template<class Type>
-Type BTree<Type>::get(Type key)
+Type BTree<Type>::get(const Type key)
 {
 	Node* f = find(key, root);
 	if(f == NULL)
@@ -61,13 +62,13 @@ Type BTree<Type>::get(Type key)
 }
 
 // удаляет значение из дерева по ключу
-// принимает: ключ такогог же типа как и значения в дереве
+// принимает: ключ такого же типа как и значения в дереве
 // выполняет поиск удаляемого узла по ключу
 // если узел не найден бросает исключение std::logic_error
 // удаляет найденный узел из дерева, освобождает память занимаемую узлом
 // балансирует дерево, уменьшает значение размера дерева на 1
 template<class Type>
-void BTree<Type>::remove(Type key)
+void BTree<Type>::remove(const Type key)
 {
 	Node* del = find(key, root);
 	if(del == NULL)
@@ -106,7 +107,7 @@ typename BTree<Type>::Node* BTree<Type>::addNode(Node* n, Node* root)
 			root->left = addNode(n, root->left);
 		else
 			root->right = addNode(n, root->right);
-		paste = balanse(root);
+		paste = root;
 	}
 	return paste;
 }
@@ -167,26 +168,16 @@ typename BTree<Type>::Node* BTree<Type>::removeNode(Node* del, Node* root)
 
 // выполняет поиск узла дерева по ключу
 // принимает: ключ, указатель на корень дерева
-// возвращает: указатель на найденый узел или NULL если узел не найден
+// возвращает: указатель на найденный узел или NULL если узел не найден
 template<class Type>
-typename BTree<Type>::Node* BTree<Type>::find(Type key, Node* root)
+typename BTree<Type>::Node* BTree<Type>::find(const Type key, Node* root)
 {
 	if(root!=NULL && !(root->data == key))
 	{
 		if(key < root->data)
-		{
-			if (root->left != NULL)
-				root = find(key, root->left);
-			else
-				root = NULL;
-		}
-		else if (root->data < key)
-		{
-			if (root->right != NULL)
-				root = find(key, root->right);
-			else
-				root = NULL;
-		}
+			root = find(key, root->left);
+		else 
+			root = find(key, root->right);
 	}
 	return root;
 }
@@ -210,15 +201,15 @@ void BTree<Type>::deleteNode(Node* n)
 template<class Type>
 typename BTree<Type>::Node* BTree<Type>::copyNode(Node* root)
 {
+	Node* newNode = NULL;
 	if(root != NULL)
 	{
-		Node* newNode = new Node;
+		newNode = new Node;
 		newNode->data = root->data;
 		newNode->left = copyNode(root->left);
 		newNode->right = copyNode(root->right);
-		return newNode;
 	}
-	return NULL;
+	return newNode;
 }
 
 //template<class Type>
@@ -264,7 +255,7 @@ int BTree<Type>::height(Node* root)
 	return r;
 }
 
-// вычисляет фактор баланса деверва (разницу высоты его веток)
+// вычисляет фактор баланса дерева (разницу высоты его веток)
 // принимает: указатель на корень дерева
 // возвращает: фактор баланса 
 // фактор баланса > 0 если левая ветка больше правой 
@@ -278,7 +269,7 @@ int BTree<Type>::bFactor(Node* n)
 }
 
 // методы балансировки
-// поворачивает дерево в лево 
+// поворачивает дерево влево 
 // принимает: указатель на корень
 // возвращает: указатель на новый корень
 template<class Type>
@@ -290,7 +281,7 @@ typename BTree<Type>::Node* BTree<Type>::rotateLeft(Node* n)
 	return t;
 }
 
-// поворачивает дерево в прфво
+// поворачивает дерево вправо
 // принимает: указатель на корень
 // возвращает: указатель на новый корень
 template<class Type>

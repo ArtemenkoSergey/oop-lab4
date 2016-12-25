@@ -19,13 +19,13 @@ MyClass::~MyClass()
 		delete[] data;
 }
 
-MyClass& MyClass::setKey(int key)
+MyClass& MyClass::setKey(const int key)
 {
 	this->key = key;
 	return *this;
 }
 
-MyClass& MyClass::setData(char* newData)
+MyClass& MyClass::setData(const char* newData)
 {
 	if (data != NULL)
 		delete[] data;
